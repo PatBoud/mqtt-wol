@@ -17,14 +17,13 @@ print("Initialisation...")
 # Importation des librairies
 import paho.mqtt.client as mqtt
 from awake import wol
+from time import sleep
 
 # Importation des paramètres secrets
 import secrets
 
-
 # Définition des variables
 mqttTopic = "wakeonlan/#"
-
 
 print ("OK")
 
@@ -46,6 +45,11 @@ def on_message(client, userdata, message):
   if (topic[len(topic) - 1] == "rogpc"):
     print("Réveil de ROGPC. MAC: " + secrets.macROGPC)
     wol.send_magic_packet(secrets.macROGPC)
+
+# Attente de 30 secondes avant la connexion car le script sera lancé
+# au démarrage du système.
+print("Délais avant de connecter...")
+sleep(30)
 
 print("Connexion au serveur MQTT...")
 # Initialisation du client MQTT
