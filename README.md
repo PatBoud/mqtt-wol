@@ -5,7 +5,7 @@
 #### Prérequis
 
 - Fichier `secrets.py` que vous devez créer
-- Librairie [pywakeonlan](https://github.com/remcohaszing/pywakeonlan)
+- Librairie [awake](https://github.com/cyraxjoe/awake)
 
 
 #### Exemple de fichier secrets.py
@@ -15,4 +15,6 @@ mqttServer = "192.168.1.104"
 mqttPort = 1883
 mqttUser = "utilisateur"
 mqttPass = "motdepasse"
+macOrdiX = "FF-FF-12-34-56-78"
+macOrdiY = "FF-AB-12-55-66-77"
 ```

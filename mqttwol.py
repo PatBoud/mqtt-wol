@@ -7,8 +7,8 @@
 # 2022-02-18
 #
 # Prérequis:
-#  - Fichier `secrets.py` que vous devez créer
-#  - Librairie [pywakeonlan](https://github.com/remcohaszing/pywakeonlan)
+#  - Fichier `secrets.py` que vous devez créer (Détails dans le README)
+#  - Librairie [awake](https://github.com/cyraxjoe/awake)
 
 
 print("--- MQTT-WOL ---")
@@ -16,7 +16,7 @@ print("Initialisation...")
 
 # Importation des librairies
 import paho.mqtt.client as mqtt
-from wakeonlan import send_magic_packet
+from awake import wol
 
 # Importation des paramètres secrets
 import secrets
@@ -39,7 +39,13 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, message):
   print("RECU: " + message.topic + " : " + str(message.payload.decode("utf-8")))
+  # Conversion du topic en liste
+  topic = message.topic.split("/")
 
+  # Extraction de la dernière partie du topic, qui doit contenir le nom du PC à réveiller
+  if (topic[len(topic) - 1] == "rogpc"):
+    print("Réveil de ROGPC. MAC: " + secrets.macROGPC)
+    wol.send_magic_packet(secrets.macROGPC)
 
 print("Connexion au serveur MQTT...")
 # Initialisation du client MQTT
@@ -51,6 +57,3 @@ client.connect(secrets.mqttServer, secrets.mqttPort, 60)
 
 
 client.loop_forever()
-
-
-# send_magic_packet('ff.ff.ff.ff.ff.ff')
